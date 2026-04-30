@@ -1,0 +1,35 @@
+using UnityEngine;
+
+/// <summary>
+/// 발사 1회 계산용 임시 컨텍스트.
+/// WeaponRuntime의 상시 스탯을 복사해서 시작하고,
+/// 이후 ammo 조건 attachment / final damage attachment를 적용한다.
+/// </summary>
+public class ShotCalculationContext
+{
+    public AmmoModuleData UsedRound;
+    public WeaponRuntime Weapon;
+
+    // 계산 전반에서 쓰는 값
+    public int ProjectileBaseDamage;
+    public float WeaponDamageMultiplier;
+    public float OptimalRangeMax;
+    public float MaxRange;
+    public float OptimalDamageMultiplier;
+    public float FarDamageMultiplier;
+
+    // 계산 중간 결과
+    public ShotRangeBand RangeBand;
+    public float RangeMultiplier;
+    public float RawDamage;
+
+    // 계산 마지막 단계용
+    public float FinalDamageFlatAdd;
+    public float FinalDamageMultiplier = 1f;
+
+    public int GetRoundedFinalDamage()
+    {
+        float finalValue = (RawDamage + FinalDamageFlatAdd) * FinalDamageMultiplier;
+        return Mathf.Max(0, Mathf.RoundToInt(finalValue));
+    }
+}
